@@ -1,0 +1,67 @@
+# docker-compose.yml
+# Đặt file này ở thư mục gốc của project (my-fullstack-app/)
+
+version: '3.8' # Sử dụng phiên bản Docker Compose file format mới nhất
+
+services:
+  # Dịch vụ MySQL Database
+  mysql:
+    image: mysql:8.0 # Sử dụng MySQL 8.0 image
+    container_name: mysql_db # Tên container dễ nhận diện
+    environment: # Các biến môi trường cho MySQL
+      MYSQL_ROOT_PASSWORD: root_password # Thay đổi mật khẩu mạnh hơn cho production
+      MYSQL_DATABASE: my_database_name # Tên database mà bạn đã export
+      MYSQL_USER: my_user # User cho database
+      MYSQL_PASSWORD: my_user_password # Mật khẩu cho user
+    ports:
+      - "3306:3306" # Mở cổng MySQL ra bên ngoài (tùy chọn, chỉ cần nếu bạn muốn truy cập từ host)
+    volumes:
+      - mysql_data:/var/lib/mysql # Volume để lưu trữ dữ liệu MySQL bền vững
+      # Copy file dump SQL của bạn vào thư mục khởi tạo MySQL
+      # MySQL sẽ tự động chạy các script .sql trong thư mục này khi khởi tạo container lần đầu
+      - ./my_database_dump.sql:/docker-entrypoint-initdb.d/my_database_dump.sql
+    networks:
+      - app_network # Kết nối vào mạng riêng của ứng dụng
+
+  # Dịch vụ Spring Boot Backend
+  backend:
+    build:
+      context: ./backend # Chỉ định thư mục chứa Dockerfile của backend
+      dockerfile: Dockerfile # Tên Dockerfile (mặc định là Dockerfile)
+    container_name: springboot_backend
+    ports:
+      - "8080:8080" # Ánh xạ cổng 8080 của container ra cổng 8080 của host
+    environment: # Các biến môi trường cho Spring Boot backend
+      # Kết nối đến database MySQL bên trong mạng Docker Compose
+      # 'mysql' là tên dịch vụ của MySQL trong docker-compose.yml
+      DB_URL: jdbc:mysql://mysql:3306/my_database_name?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: my_user
+      DB_PASSWORD: my_user_password
+      SPRING_PROFILES_ACTIVE: prod # Kích hoạt profile production (nếu bạn có)
+    depends_on: # Đảm bảo MySQL khởi động trước backend
+      - mysql
+    networks:
+      - app_network
+
+  # Dịch vụ ReactJS Frontend (được phục vụ bởi Nginx)
+  frontend:
+    build:
+      context: ./frontend # Chỉ định thư mục chứa Dockerfile của frontend
+      dockerfile: Dockerfile # Tên Dockerfile (mặc định là Dockerfile)
+    container_name: react_frontend
+    ports:
+      - "80:80" # Ánh xạ cổng 80 của container (Nginx) ra cổng 80 của host (truy cập qua HTTP)
+      # Nếu bạn muốn HTTPS sau này, bạn sẽ cấu hình Nginx hoặc dùng reverse proxy khác (ví dụ: Caddy, Certbot)
+    depends_on: # Đảm bảo backend khởi động trước frontend (nếu frontend cần backend để build/khởi động)
+      - backend
+    networks:
+      - app_network
+
+# Định nghĩa các Volumes để lưu trữ dữ liệu bền vững
+volumes:
+  mysql_data: # Volume cho dữ liệu MySQL
+
+# Định nghĩa mạng nội bộ để các container giao tiếp
+networks:
+  app_network:
+    driver: bridge # Sử dụng driver mạng bridge mặc định

@@ -8,8 +8,12 @@ WORKDIR /app
 COPY package.json ./
 COPY package-lock.json ./
 
+# Thêm bước xóa node_modules và package-lock.json để đảm bảo cài đặt sạch
+RUN rm -rf node_modules package-lock.json
+
 # Cài đặt dependencies
-RUN npm install
+# Sử dụng --force nếu vẫn gặp lỗi optional dependencies, nhưng nên thử lại npm install thông thường trước
+RUN npm install --legacy-peer-deps
 
 # Copy toàn bộ mã nguồn của bạn
 COPY . .
@@ -19,6 +23,7 @@ COPY . .
 ENV NODE_ENV production
 RUN npm run build
 
+RUN ls -l /app
 # Stage 2: Serve the application with Nginx
 FROM nginx:latest
 
@@ -29,7 +34,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy các file build của React từ stage 'build' vào thư mục phục vụ của Nginx
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Mở cổng 80 để Nginx phục vụ
 EXPOSE 80

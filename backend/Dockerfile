@@ -1,6 +1,6 @@
 # Stage 1: Build the Spring Boot application
 # Sử dụng một OpenJDK image với Maven hoặc Gradle để build ứng dụng
-FROM openjdk:17-jdk-slim AS build
+FROM maven:3-openjdk-17 AS build
 
 # Đặt thư mục làm việc trong container
 WORKDIR /app

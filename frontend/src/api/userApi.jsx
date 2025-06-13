@@ -1,7 +1,7 @@
 // userApi.js
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080'; // Thay đổi URL theo server của bạn
+const API_BASE_URL = 'http://chembridge.nghean.asia:8080'; // Thay đổi URL theo server của bạn
 
 const userApi = {
   // Đăng ký tài khoản

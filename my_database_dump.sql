@@ -93,63 +93,6 @@ LOCK TABLES `questions` WRITE;
 /*!40000 ALTER TABLE `questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `spring_session`
---
-
-DROP TABLE IF EXISTS `spring_session`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `spring_session` (
-  `PRIMARY_ID` char(36) NOT NULL,
-  `SESSION_ID` char(36) NOT NULL,
-  `CREATION_TIME` bigint NOT NULL,
-  `LAST_ACCESS_TIME` bigint NOT NULL,
-  `MAX_INACTIVE_INTERVAL` int NOT NULL,
-  `EXPIRY_TIME` bigint NOT NULL,
-  `PRINCIPAL_NAME` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`PRIMARY_ID`),
-  UNIQUE KEY `SPRING_SESSION_IX1` (`SESSION_ID`),
-  KEY `SPRING_SESSION_IX2` (`EXPIRY_TIME`),
-  KEY `SPRING_SESSION_IX3` (`PRINCIPAL_NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `spring_session`
---
-
-LOCK TABLES `spring_session` WRITE;
-/*!40000 ALTER TABLE `spring_session` DISABLE KEYS */;
-INSERT INTO `spring_session` VALUES ('3ae382a0-1d41-45a8-a427-6a11c61e753c','d8de8e77-ff10-4704-bd73-f59a2a660594',1749520851557,1749548021352,7200,1749555221352,NULL),('df4de091-d968-4ae2-84f0-b36ee30fbc7c','4091cf3b-1578-4920-b4ba-809b3edbcb20',1749542333985,1749547996714,7200,1749555196714,NULL);
-/*!40000 ALTER TABLE `spring_session` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `spring_session_attributes`
---
-
-DROP TABLE IF EXISTS `spring_session_attributes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `spring_session_attributes` (
-  `SESSION_PRIMARY_ID` char(36) NOT NULL,
-  `ATTRIBUTE_NAME` varchar(200) NOT NULL,
-  `ATTRIBUTE_BYTES` blob NOT NULL,
-  PRIMARY KEY (`SESSION_PRIMARY_ID`,`ATTRIBUTE_NAME`),
-  CONSTRAINT `SPRING_SESSION_ATTRIBUTES_FK` FOREIGN KEY (`SESSION_PRIMARY_ID`) REFERENCES `spring_session` (`PRIMARY_ID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `spring_session_attributes`
---
-
-LOCK TABLES `spring_session_attributes` WRITE;
-/*!40000 ALTER TABLE `spring_session_attributes` DISABLE KEYS */;
-INSERT INTO `spring_session_attributes` VALUES ('3ae382a0-1d41-45a8-a427-6a11c61e753c','email',_binary '¨\Ì\0t\0\ruser@user.com'),('3ae382a0-1d41-45a8-a427-6a11c61e753c','full_name',_binary '¨\Ì\0t\0user'),('3ae382a0-1d41-45a8-a427-6a11c61e753c','logged_in',_binary '¨\Ì\0sr\0java.lang.Boolean\Õ rÄ’ú˙\Ó\0Z\0valuexp'),('3ae382a0-1d41-45a8-a427-6a11c61e753c','login_time',_binary '¨\Ì\0sr\0java.lang.Long;ã\‰êÃè#\ﬂ\0J\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0óXÇ\›A'),('3ae382a0-1d41-45a8-a427-6a11c61e753c','phone',_binary '¨\Ì\0t\0+0888093367'),('3ae382a0-1d41-45a8-a427-6a11c61e753c','user_id',_binary '¨\Ì\0sr\0java.lang.Integer‚†§˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0'),('3ae382a0-1d41-45a8-a427-6a11c61e753c','user_name',_binary '¨\Ì\0t\0user'),('df4de091-d968-4ae2-84f0-b36ee30fbc7c','email',_binary '¨\Ì\0t\0\ruser@user.com'),('df4de091-d968-4ae2-84f0-b36ee30fbc7c','full_name',_binary '¨\Ì\0t\0user'),('df4de091-d968-4ae2-84f0-b36ee30fbc7c','logged_in',_binary '¨\Ì\0sr\0java.lang.Boolean\Õ rÄ’ú˙\Ó\0Z\0valuexp'),('df4de091-d968-4ae2-84f0-b36ee30fbc7c','login_time',_binary '¨\Ì\0sr\0java.lang.Long;ã\‰êÃè#\ﬂ\0J\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0óX\Á\‹\·'),('df4de091-d968-4ae2-84f0-b36ee30fbc7c','phone',_binary '¨\Ì\0t\0+0888093367'),('df4de091-d968-4ae2-84f0-b36ee30fbc7c','user_id',_binary '¨\Ì\0sr\0java.lang.Integer‚†§˜Åá8\0I\0valuexr\0java.lang.NumberÜ¨ïî\‡ã\0\0xp\0\0\0'),('df4de091-d968-4ae2-84f0-b36ee30fbc7c','user_name',_binary '¨\Ì\0t\0user');
-/*!40000 ALTER TABLE `spring_session_attributes` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`

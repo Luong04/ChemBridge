@@ -9,6 +9,14 @@ services:
     environment: # Các biến môi trường cho MySQL
       MYSQL_ROOT_PASSWORD: LuongLuvWinnerX2004 # Đã cập nhật để khớp với application.properties
       MYSQL_DATABASE: chembridge # Đã cập nhật để khớp với database của bạn
+    command: [
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci',
+      '--skip-character-set-client-handshake',
+      '--character-set-client-handshake=FALSE',
+      '--init-connect=SET NAMES utf8mb4',
+      '--init-connect=SET collation_connection = utf8mb4_unicode_ci'
+    ]
     ports:
       - "3306:3306" # Mở cổng MySQL ra bên ngoài (tùy chọn, chỉ cần nếu bạn muốn truy cập từ host)
     volumes:
@@ -17,6 +25,7 @@ services:
       - ./my_database_dump.sql:/docker-entrypoint-initdb.d/my_database_dump.sql
       # Thêm script để cấp quyền cho user root từ mọi host
       - ./init_grants.sql:/docker-entrypoint-initdb.d/init_grants.sql # Dòng mới được thêm
+      - ./mysql-config/my.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
     healthcheck: # Thêm Healthcheck để đảm bảo MySQL đã sẵn sàng
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pLuongLuvWinnerX2004"] # Đã cập nhật user/pass
       interval: 5s # Kiểm tra mỗi 5 giây

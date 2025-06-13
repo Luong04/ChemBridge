@@ -30,7 +30,7 @@ public class QuizController {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping("/questions/list/{questionListId}")
+    @GetMapping(value="/questions/list/{questionListId}", produces = "application/json; charset=UTF-8")
     public ResponseEntity<?> getQuestions(@PathVariable int questionListId, HttpSession session) {
         // Kiểm tra session
         Boolean loggedIn = (Boolean) session.getAttribute("logged_in");
@@ -120,7 +120,7 @@ public class QuizController {
         }
     }
 
-    @GetMapping("/questionList")
+    @GetMapping(value = "/questionList", produces = "application/json; charset=UTF-8")
     public ResponseEntity<?> getAllQuestionList(HttpSession session) {
         System.out.println("Nhận yêu cầu lấy danh sách câu hỏi: sessionId=" + session.getId());
 

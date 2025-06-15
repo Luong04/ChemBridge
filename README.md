@@ -1,4 +1,5 @@
 Hướng dẫn triển khai web:
+Trước tiên nhớ mở cổng 8080 và 80 nhá
 1, Khi chuyển sang máy mới, cần xem lại địa chỉ IP, các khu vực chứa địa chỉ bao gồm
 Frontend: tệp userApi, axiosClient
 Backend: application.properties, SecurityConfig.java
